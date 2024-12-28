@@ -34,8 +34,8 @@ CORS(app)
 
 # Route for serving the frontend page
 @app.route('/', methods=['GET'])
-async def home():
-    return jsonify({"message": "Welcome to the Jarvis API!"})
+async def all():
+    return jsonify("hi")
 
 # Chat endpoint to handle user messages
 @app.route("/chat", methods=["POST"])
@@ -78,6 +78,3 @@ def chat_with_llama():
         logger.error(f"Error in /chat endpoint: {e}")
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
-# Main entry point to run the app
-if __name__ == "__main__":
-    app.run(debug=True)
