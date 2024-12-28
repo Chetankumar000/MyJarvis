@@ -34,7 +34,7 @@ CORS(app)
 
 # Route for serving the frontend page
 @app.route('/', methods=['GET'])
-def home():
+def all():
     return jsonify({"message": "Hi"})  # Adjusted for proper response
 
 # Chat endpoint to handle user messages
