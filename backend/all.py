@@ -79,5 +79,5 @@ def chat_with_llama():
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 # # Run the Flask app
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
