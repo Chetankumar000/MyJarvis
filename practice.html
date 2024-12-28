@@ -70,7 +70,7 @@
         chatBox.innerHTML += `<div><b>You:</b> ${message}</div>`;
 
         // Send message to the backend (ChatGPT-like API)
-        fetch("http://127.0.0.1:5000/chat", {
+        fetch("https://e470cbc4-6e33-4df5-9d29-d606fd224f0f-dev.e1-us-east-azure.choreoapis.dev/cyber-api/jar/v1.0/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: message }),
