@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f7fc;
+      }
+      #chat-box {
+        height: 300px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 90%;
+        max-width: 600px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+      #user-input {
+        width: 80%;
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 15px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Educational Tutor Chatbot</h1>
+    <div id="chat-box"></div>
+    <div>
+      <input
+        id="user-input"
+        type="text"
+        placeholder="Type your question here..."
+      />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+      function sendMessage() {
+        const userInput = document.getElementById("user-input");
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        // Append user message to chat box
+        const chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML += `<div><b>You:</b> ${message}</div>`;
+
+        // Send message to the backend (ChatGPT-like API)
+        fetch("http://127.0.0.1:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: message }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.reply) {
+              chatBox.innerHTML += `<div><b>Tutor:</b> ${data.reply}</div>`;
+            } else {
+              chatBox.innerHTML += `<div><b>Error:</b> Failed to get a response.</div>`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
+          })
+          .catch((error) => {
+            chatBox.innerHTML += `<div><b>Error:</b> ${error.message}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
+          });
+
+        userInput.value = ""; // Clear input box
+      }
+    </script>
+  </body>
+</html>

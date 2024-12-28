@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Tutor Chatbot</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #8e44ad, #3498db);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin: 20px;
+            font-size: 2.5rem;
+        }
+
+        /* Chat Container */
+        #chat-box {
+            background-color: #ffffff;
+            color: #333;
+            border: 2px solid #8e44ad;
+            border-radius: 8px;
+            width: 80%;
+            height: 400px;
+            margin: 0 auto 20px auto;
+            padding: 15px;
+            overflow-y: auto;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        /* User and Tutor Message Styling */
+        .user-message {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .tutor-message {
+            color: #8e44ad;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* Input and Button Styling */
+        #user-input {
+            width: 70%;
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Educational Tutor Chatbot</h1>
+    <div id="chat-box"></div>
+    <input id="user-input" type="text" placeholder="Type your question here...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("user-input");
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById("chat-box");
+            
+            // Append User Message
+            chatBox.innerHTML += `<div class="user-message"><b>You:</b><br>${message}</div>`;
+
+            // Send Message to Backend
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reply) {
+                    // Append Tutor Response
+                    chatBox.innerHTML += `<div class="tutor-message"><b>Tutor:</b><br>${data.reply}</div>`;
+                } else {
+                    chatBox.innerHTML += `<div class="tutor-message"><b>Error:</b><br>Failed to get a response.</div>`;
+                }
+                chatBox.scrollTop = chatBox.scrollHeight;  // Auto-scroll
+            })
+            .catch(error => {
+                chatBox.innerHTML += `<div class="tutor-message"><b>Error:</b><br>${error.message}</div>`;
+            });
+
+            userInput.value = "";  // Clear input box
+        }
+    </script>
+</body>
+</html>
