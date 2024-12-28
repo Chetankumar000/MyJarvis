@@ -34,8 +34,8 @@ CORS(app)
 
 # Route for serving the frontend page
 @app.route('/', methods=['GET'])
-async def all():
-    return jsonify("hi")
+def home():
+    return jsonify({"message": "Hi"})  # Adjusted for proper response
 
 # Chat endpoint to handle user messages
 @app.route("/chat", methods=["POST"])
@@ -78,3 +78,6 @@ def chat_with_llama():
         logger.error(f"Error in /chat endpoint: {e}")
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+# # Run the Flask app
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000)
