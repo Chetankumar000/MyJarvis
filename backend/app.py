@@ -14,9 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Retrieve the API key from environment variables
-api_key = "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" 
-# api_key =os.getenv("API_KEY")
-
+api_key = os.getenv("API_KEY", "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")  # Fallback to default for testing
 
 # Ensure the API key is available, exit if not
 if not api_key:
@@ -56,7 +54,7 @@ with app.app_context():
 # Route for serving the frontend page
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "Hi"})  # Adjusted for proper response
+    return jsonify({"message": "Hi"})  # Adjusted for proper response
 
 @app.route("/chat", methods=["POST"])
 def chat_with_llama():
@@ -103,13 +101,13 @@ def chat_with_llama():
             logger.error(f"Database error: {str(e)}")
             return jsonify({"error": "Failed to save chat history"}), 500
 
-
         # Return chatbot response as JSON
- 
         return jsonify({"reply": bot_reply})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Get the PORT from the environment or use 5000 as a fallback
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
