@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Retrieve the API key from environment variables
-api_key = os.getenv("API_KEY", "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")  # Fallback to default for testing
+api_key =os.getenv("API_KEY")# Fallback to default for testing
 
 # Ensure the API key is available, exit if not
 if not api_key:
