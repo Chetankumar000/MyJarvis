@@ -57,7 +57,7 @@ def chat_with_llama():
 
         # Make the API call to Groq with the Llama model
         response = client.chat.completions.create(
-            model="llama-3.1-70b-versatile",  # Adjust this as needed
+            model="meta-llama/llama-4-scout-17b-16e-instruct",  # Adjust this as needed
             messages=messages,
             temperature=0.7,
             max_tokens=300,
